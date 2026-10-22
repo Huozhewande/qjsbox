@@ -1,0 +1,9 @@
+qjsbox
+Copyright 2026 The qjsbox Authors
+
+This product includes software developed by third parties:
+
+- QuickJS, Copyright (c) 2017-2021 Fabrice Bellard and Charlie Gordon (MIT)
+- Acorn, Copyright (C) 2012-2022 by various contributors (MIT)
+
+See THIRD_PARTY_NOTICES.md for the full license texts.

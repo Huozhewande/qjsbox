@@ -1,0 +1,33 @@
+{
+  "quickjs": {
+    "version": "2025-09-13 (release archive revision 2)",
+    "url": "https://bellard.org/quickjs/quickjs-2025-09-13-2.tar.xz",
+    "sha256": "996c6b5018fc955ad4d06426d0e9cb713685a00c825aa5c0418bd53f7df8b0b4"
+  },
+  "acorn": {
+    "version": "8.15.0",
+    "url": "https://registry.npmjs.org/acorn/-/acorn-8.15.0.tgz",
+    "sha256": "e46eae89bd9761f16d1d25563b837b55b4b78f3ece06ee0b9789cb2644f523b3"
+  },
+  "files": {
+    "acorn/LICENSE": "76a876cf886ff9be2a8b5e2e86514fed06223c8c9f0c1e9ee9606e93841e00b7",
+    "acorn/acorn.js": "fdb08546776ec6228b03e8d02b40d4ab3255bae5f401adba7ff5dad927ac5c9c",
+    "quickjs/LICENSE": "598fd7fc928e4350abce36e337ba5a1346923c5c692f5be92c3d8e29ddd7c18d",
+    "quickjs/VERSION": "164beb8843157a89dd74f069984229709b71fcfb2d61774c0695d30432a50143",
+    "quickjs/cutils.c": "203cc40bb8c8f4e3c6ce81f50526c0605ec0c21428c3317422646b445bc2e8fb",
+    "quickjs/cutils.h": "660cde528f35a955e9869b83a94ab95cced175704960f9f22974a7685daf7f4b",
+    "quickjs/dtoa.c": "af5abd68fa9806d1a19bdd5f2daef00d5fd0990ae56311382dfed4700343f074",
+    "quickjs/dtoa.h": "462070f7678a894b9f3612422f280f4dce412eb360a5cc585a513f407fc23114",
+    "quickjs/libregexp-opcode.h": "b7f19ead29be0c4c4983ac0764642449bf86616482d143415495ec6ba0645e9a",
+    "quickjs/libregexp.c": "bcdbb93fb104bc0ddb9addd1a1a7dedf4893371a69b84d395c79abfe6539be80",
+    "quickjs/libregexp.h": "ff67a7d8ed066517a5971a30dd3cc353257d6d9d7b6acda1d5cc655c98704b4f",
+    "quickjs/libunicode-table.h": "48d21f5586cc9fa9ca82bded980d62aa0edae9c6be599cca16e937b4b807e5b5",
+    "quickjs/libunicode.c": "e7bdc6052825b8fab8d6717106a2fbf72e801f9b5bc1c24506baaa4fb63618c5",
+    "quickjs/libunicode.h": "6ccc9a01f442490316f56c144f3c62089ff9139a8765e7292ecdd426cbbd3e00",
+    "quickjs/list.h": "181c6b25d9d0e4853315d36a6e6fab3b2c3554271693d898a439384ba0f67c2b",
+    "quickjs/quickjs-atom.h": "ae2f345fa9061c99606ce5d44124ecad4ca6926f8ad3719b0494877459ffa226",
+    "quickjs/quickjs-opcode.h": "a45216ee91c6e9b2c01626b3d6c5acf57717a1d6b3bfedd148ea85c444d98382",
+    "quickjs/quickjs.c": "f1c17b0c9bda1e7e7a3436f3b426085962d361294c5ada2a21b719ac39287170",
+    "quickjs/quickjs.h": "ad3455cafab56a036e5b94c8e6915e653a09f48e32e72cb66f0d0775047a7bb5"
+  }
+}

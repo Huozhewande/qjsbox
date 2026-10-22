@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: ${{ matrix.os }} / go ${{ matrix.go }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux runs prove the seccomp and hard address-space limits.
+          - { os: ubuntu-latest, go: "1.22" }
+          - { os: ubuntu-latest, go: stable }
+          - { os: ubuntu-24.04-arm, go: stable }
+          - { os: macos-latest, go: stable }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - run: make worker
+      - run: make selftest
+      - run: make test
+      - run: go vet ./...
+      - name: gofmt
+        run: test -z "$(gofmt -l .)"
+      - run: make example
