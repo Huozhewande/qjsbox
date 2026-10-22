@@ -19,6 +19,7 @@
 #ifdef __APPLE__
 #include <sandbox.h>
 #include <mach/mach.h>
+#include <libproc.h>
 #endif
 #ifdef __linux__
 #include <stddef.h>
@@ -159,6 +160,24 @@ static int selftest_isolation(void) {
     if(n<0||(size_t)n>=sizeof(proof))return 125;write_all(proof,(size_t)n);
     return 0;
 }
+static void close_from_3(void) {
+    long maxfd=sysconf(_SC_OPEN_MAX);if(maxfd<0)maxfd=1048576;
+    for(int fd=3;fd<maxfd;fd++)close(fd);
+}
+#ifdef __APPLE__
+/* Close only listed descriptors: OPEN_MAX can be ~1M under raised limits, and
+   looping over every number costs ~90 ms per worker. Errors fall back to the loop. */
+static int close_listed_fds(void) {
+    int size;
+    do size=proc_pidinfo(getpid(),PROC_PIDLISTFDS,0,NULL,0); while(size<0&&errno==EINTR);
+    if(size<=0)return -1;
+    struct proc_fdinfo *fds=malloc((size_t)size);if(!fds)return -1;
+    do size=proc_pidinfo(getpid(),PROC_PIDLISTFDS,0,fds,size); while(size<0&&errno==EINTR);
+    if(size<=0){free(fds);return -1;}
+    for(int i=0;i<size/(int)PROC_PIDLISTFD_SIZE;i++)if(fds[i].proc_fd>2)close(fds[i].proc_fd);
+    free(fds);return 0;
+}
+#endif
 int main(int argc,char **argv) {
     deadline=mono_ms()+900;
     struct sigaction sa;memset(&sa,0,sizeof(sa));sa.sa_handler=timeout_handler;sigemptyset(&sa.sa_mask);
@@ -167,13 +186,11 @@ int main(int argc,char **argv) {
     if(setitimer(ITIMER_REAL,&timer,NULL))return 125;
     /* Close inherited descriptors before lowering RLIMIT_NOFILE. */
     #if defined(__linux__) && defined(__NR_close_range)
-    if(syscall(__NR_close_range,3,~0U,0)<0) {
-        long maxfd=sysconf(_SC_OPEN_MAX);if(maxfd<0)maxfd=1048576;
-        for(int fd=3;fd<maxfd;fd++)close(fd);
-    }
+    if(syscall(__NR_close_range,3,~0U,0)<0)close_from_3();
+#elif defined(__APPLE__)
+    if(close_listed_fds())close_from_3();
 #else
-    long maxfd=sysconf(_SC_OPEN_MAX);if(maxfd<0)maxfd=1048576;
-    for(int fd=3;fd<maxfd;fd++)close(fd);
+    close_from_3();
 #endif
     if(isolate()) {literal_error("SCRIPT_UNAVAILABLE","OS sandbox initialization failed");return 125;}
     if(argc==2 && !strcmp(argv[1],"--selftest-isolation"))return selftest_isolation();

@@ -23,5 +23,8 @@ q="$root/worker/vendor/quickjs"
 "${CC:-cc}" -O2 -fwrapv -Wno-deprecated-declarations -D_GNU_SOURCE '-DCONFIG_VERSION="2025-09-13"' -I"$q" -I"$build" \
   "$root/worker/worker.c" "$q/quickjs.c" "$q/dtoa.c" "$q/libregexp.c" "$q/libunicode.c" "$q/cutils.c" \
   -lm -o "$build/qjsbox-worker"
-cp "$build/qjsbox-worker" "$out"
+# Replace via rename: overwriting an executed binary in place makes macOS on
+# Apple Silicon kill the new one for an invalid code signature.
+cp "$build/qjsbox-worker" "$out.tmp.$$"
+mv -f "$out.tmp.$$" "$out"
 printf '%s\n' "$out"
